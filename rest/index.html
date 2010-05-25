@@ -1,0 +1,431 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<title>Wholemeal Ltd: Rest - It's all about the URL</title>
+<!-- metadata -->
+<meta name="generator" content="S5" />
+<meta name="version" content="S5 1.1" />
+<meta name="presdate" content="20100212" />
+<meta name="author" content="Malcolm Locke" />
+<meta name="company" content="Wholemeal Ltd" />
+<!-- configuration parameters -->
+<meta name="defaultView" content="slideshow" />
+<meta name="controlVis" content="hidden" />
+<!-- style sheet links -->
+<link rel="stylesheet" href="../ui/wholemeal/slides.css" type="text/css" media="projection" id="slideProj" />
+<link rel="stylesheet" href="../ui/wholemeal/outline.css" type="text/css" media="screen" id="outlineStyle" />
+<link rel="stylesheet" href="../ui/wholemeal/print.css" type="text/css" media="print" id="slidePrint" />
+<link rel="stylesheet" href="../ui/wholemeal/opera.css" type="text/css" media="projection" id="operaFix" />
+<!-- S5 JS -->
+<script src="../ui/wholemeal/slides.js" type="text/javascript"></script>
+</head>
+<body>
+
+<div class="layout">
+<div id="controls"><!-- DO NOT EDIT --></div>
+<div id="currentSlide"><!-- DO NOT EDIT --></div>
+<div id="header"></div>
+<div id="footer">
+<h1>Egressive - Feb 12th 2010</h1>
+<h2>REST - It's all about the URL</h2>
+</div>
+
+</div>
+
+
+<div class="presentation">
+
+<div class="slide">
+<h1>REST - It's all about the URL</h1>
+<h3>Malcolm Locke</h3>
+<h4>Wholemeal Ltd</h4>
+</div>
+
+
+<div class="slide">
+<h1>REST is ...</h1>
+<ul class="incremental">
+<li><strong>RE</strong>presentational <Strong>S</strong>tate <strong>T</strong>ransfer</li>
+<li>(i)CRUD over HTTP</li>
+<li>Term coined by Roy Fielding in 2000</li>
+<li>Not a standard</li>
+<li>Brand new ... well, only available since 1999</li>
+</ul>
+<div class="handout">
+<p>
+In essence, REST provides mechanism for Index, Create, Retrieve, Update and
+Delete (iCRUD) using mechanisms internal to the HTTP specification.
+</p>
+<p>
+Roy Fielding termed the phrase REST in his 
+<a href="http://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm">doctoral dissertation</a> in 2000.
+He was one of the authors of the HTTP 1.0 and 1.1 specifications.
+</p>
+<p>
+There is no offical standard, it is more an architectural style which makes use
+of often overlooked elements of the HTTP spec.
+</p>
+</div>
+</div>
+
+
+
+<div class="slide">
+<h1>Interaction with a web app</h1>
+<p>
+Most web applications are concerned with  performing <strong>actions</strong>
+on <em>resources</em>, for example:</p>
+<ul class="incremental">
+<li><strong>List</strong> all the <em>blog posts</em></li>
+<li><strong>Create</strong> a new <em>comment</em></li>
+<li><strong>Show</strong> a <em>movie review</em></li>
+<li><strong>Update</strong> a <em>shopping cart</em></li>
+<li><strong>Delete</strong> a <em>node</em> (Are you sure?)</li>
+</ul>
+</div>
+
+
+
+<div class="slide">
+<h1>Old Skool PHP application</h1>
+<ul>
+<li>Index - <code>/index.php?type=article</code></li>
+<li>Create - <code>/create.php?type=article</code></li>
+<li>Retrieve - <code>/show.php?type=article&amp;id=69</code></li>
+<li>Update - <code>/update.php?type=article&amp;id=69</code></li>
+<li>Delete - <code>/delete.php?type=article&amp;id=69</code></li>
+</ul>
+<div class="handout">
+<p>
+Typical web applications use different URL's to differentiate between
+different actions.
+</p>
+<p>
+The URL is often crafted based upon the the action required (e.g.
+<code>delete.php</code>), or a GET or POST request parameter will define the
+action required.  Often, an additional request parameter will contain an 
+identifier for the resource to be acted upon, for example a URL containing
+<code>...&amp;id=69&amp;...</code>
+</p>
+</div>
+</div>
+
+
+
+<div class="slide">
+<h1>Drupal</h1>
+<ul>
+<li>Index - <code>/node</code></li>
+<li>Create - <code>/node/add/story</code></li>
+<li>Retrieve - <code>/node/69</code></li>
+<li>Update - <code>/node/69/edit</code></li>
+<li>Delete - <code>/node/69/delete</code></li>
+</ul>
+<div class="handout"
+<p>The situation with Drupal is slightly more legible than our Old Skool
+PHP application.  However, note that the URL is different for each action.</p>
+</div>
+</div>
+
+<div class="slide">
+<h1>RESTful application</h1>
+<ul>
+<li>Index - <code>/articles</code></li>
+<li>Create - <code>/articles</code></li>
+<li>Retrieve - <code>/articles/69</code></li>
+<li>Update - <code>/articles/69</code></li>
+<li>Delete - <code>/articles/69</code></li>
+</ul>
+<div class="handout">
+<p>
+RESTful applications use the same URL for multiple actions.  The HTTP method
+is used to determine the action required.
+</p>
+<p>
+The traditional PHP application above used parameters to define the resource
+and action required, and Drupal uses the URL to define the action required.</p>
+<p>RESTful applications use the URL to define the resource (that's what
+the R in URL stands for) and the HTTP method to define the action.
+</p>
+</div>
+</div>
+
+
+
+<div class="slide">
+<h1>Typical HTTP requests</h1>
+<p>
+<strong>Show</strong> a <em>node</em>
+</p>
+<pre class="code">
+<strong>GET</strong> <em>/node/69</em> HTTP/1.1
+</pre>
+<strong>Create</strong> a new <em>story</em>
+<pre>
+<strong>POST</strong> <em>/node/add/story</em> HTTP/1.1
+<em>+ encoded form data ...</em>
+</pre>
+</div>
+
+
+
+<div class="slide">
+<h1>HTTP 'verbs'</h1>
+<ul class="incremental">
+<li>Well known HTTP verbs - <code>GET</code> and <code>POST</code></li>
+<li>Lesser known ones - <code>HEAD</code>,<code>PUT</code>,
+<code>DELETE</code>,<code>TRACE</code>,<code>OPTIONS</code>,
+<code>CONNECT</code></li>
+</ul>
+<div class="handout">
+<p>
+The HTTP 1.1 specification has always had these extra methods, and the purpose
+of the actions that REST employs are exactly as they are defined in the
+original specification.  At some point during the emergence of the WWW, these
+extra methods fell by the wayside.
+</p>
+<p>
+For REST, only GET, HEAD, POST, PUT and DELETE are relevant.  A summary of
+these methods, as defined by RFC 2616, is listed below.
+</p>
+<dl>
+<dt>GET</dt>
+<dd>The GET method means retrieve whatever information (in the form of an
+   entity) is identified by the Request-URI.</dd>
+<dt>HEAD</dt>
+<dd>The HEAD method is identical to GET except that the server MUST NOT
+   return a message-body in the response.</dd>
+<dt>POST</dt>
+<dd>The POST method is used to request that the origin server accept the
+   entity enclosed in the request as a new subordinate of the resource
+   identified by the Request-URI</dd>
+<dt>PUT</dt>
+<dd>The PUT method requests that the enclosed entity be stored under the
+   supplied Request-URI. If the Request-URI refers to an already
+   existing resource, the enclosed entity SHOULD be considered as a
+   modified version of the one residing on the origin server.</dd>
+<dt>DELETE</dt>
+<dd>The DELETE method requests that the origin server delete the resource
+   identified by the Request-URI</dd>
+</dl>
+</div>
+</div>
+
+
+<div class="slide">
+<h1>Verbs define the action</h1>
+<ul class="incremental">
+<li>Index - <code><strong>GET</strong> /articles</code></li>
+<li>Create - <code><strong>POST</strong> /articles</code></li>
+<li>Retrieve - <code><strong>GET</strong> /articles/69</code></li>
+<li>Update - <code><strong>PUT</strong> /articles/69</code></li>
+<li>Delete - <code><strong>DELETE</strong> /articles/69</code></li>
+</ul>
+<div class="handout">
+<p>In the examples above, it is clear to see 'perform 
+<strong>action</strong> on <em>resource</em>' represented in the HTTP
+request.</p>
+<p>
+Because the <strong>action</strong> and <em>resource</em> are now encoded
+into the request header, all that needs to be transmitted in the request
+body is the representation of the resource, for example the encoded POST 
+parameters.  This is what is meant by the word 'Representational' in the
+REST acronym.
+</p>
+</div>
+</div>
+
+
+
+<div class="slide">
+<h1>The HEAD method</h1>
+<p>
+The <code>HEAD</code> method is used to retrieve meta information about the
+resource, without retrieving the actual resource representation.
+</p>
+<p>
+An example use of this may be to retrieve file size and mime type of a video
+file without having to retrieve the file contents.
+</p>
+</div>
+
+
+
+
+<div class="slide">
+<h1>Safety and idempotence</h1>
+<dl>
+<dt>Safety</dt>
+<dd>
+A method is safe if it doesn't modify the resources on the server.
+</dd>
+<dt>Idempotence</dt>
+<dd>
+A method is idempotent if calling it multiple times with the same
+parameters has the same effect as calling it once.
+</dd>
+</dl>
+<div class="handout">
+<p>
+The concepts of safety and idempotence are mentioned in the HTTP specification.
+</p>
+<p>
+The concept of safety has historically often been overlooked in web
+applications, and applications with functions like our old skool example
+<code>GET /delete.php?type=article&id=69</code> represents a typical
+violation of the principle of safety for a <code>GET</code> request.
+</p>
+<p>
+A good example of problems created by this were uncovered by the release
+of the <a href="http://en.wikipedia.org/wiki/Google_Web_Accelerator">Google
+Web Accelerator</a> in 2005.  This was a browser accelerator, which worked
+by prefetching all links on a page so they could be displayed instantly when
+clicked by the user.
+</p>
+<p>
+The tool made the assumption that <code>GET</code> requests would always be
+safe, but as shown in the example URL above this is not always true and caused
+lots of problems for users.  The tool is no longer available to download.
+</p>
+</div>
+</div>
+
+
+
+
+<div class="slide">
+<h1>Safety and idempotence</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Safe?</th>
+      <th>Idempotent?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="incremental">
+      <td>HEAD</td>
+      <td>Yes</td>
+      <td>Yes</td>
+    </tr>
+    <tr class="incremental">
+      <td>GET</td>
+      <td>Yes</td>
+      <td>Yes</td>
+    </tr>
+    <tr class="incremental">
+      <td>POST</td>
+      <td>no</td>
+      <td>no</td>
+    </tr>
+    <tr class="incremental">
+      <td>PUT</td>
+      <td>no</td>
+      <td>yes</td>
+    </tr>
+    <tr class="incremental">
+      <td>DELETE</td>
+      <td>no</td>
+      <td>yes</td>
+    </tr>
+  </tbody>
+</table>
+<div class="handout">
+<p>
+The table above shows the safety and idempotence of each of the HTTP methods
+used by RESTfull applications.
+</p>
+</div>
+</div>
+
+
+<div class="slide">
+<h1>HTML forms</h1>
+<dl>
+<dt>HTML4</dt>
+<dd>Only <code>GET</code> and <code>POST</code> allowed</dd>
+<dt>HTML5</dt>
+<dd>Allows <code>GET</code>,<code>POST</code>,<code>PUT</code>
+and <code>DELETE</code></dd>
+</dl>
+<div class="handout">
+<p>
+One of the key reasons REST hasn't gained as much leverage as it could has been
+the omission of PUT and DELETE from the HTML <code>form method</code> attribute
+in HTML specifications below version 5.
+</p>
+<p>
+The inclusion of these extra HTTP methods in the HTML 5 specification is
+likely to increase the usage of REST in web applications.
+</p>
+</div>
+</div>
+
+
+
+<div class="slide">
+<h1>In the wild</h1>
+<ul class="incremental">
+<li>Amazon S3, Twitter</li>
+<li>Ruby on Rails, Symfony et al</li>
+<li>REST in Drupal - <a href="http://drupal.org/project/rest_server">http://drupal.org/project/rest_server</a></li>
+</ul>
+<div class="handout">
+<p>
+Several well known web sites present a RESTful API.  Some sites present an
+interface that is more 'pure REST' than others.  Amazon S3 has a pure REST
+API.  Digg.com has an API that initial looks RESTful, but on closer
+examination only supports the <code>GET</code> and <code>POST</code> method,
+and describes itself as 'REST-like'.
+</p>
+<p>
+MVC style frameworks that use REST tend to use it as the core mechanism
+for CRUD style operations.  In Ruby on Rails, it is the preferred mechanism
+for creating routing rules.
+</p>
+<p>
+In these applications, the web pages can be seen as decoupled from the
+application.  They are one possible consumer of the REST interface for the web
+application.
+</p>
+<p>
+These frameworks usually work around the limitation with the HTML <code>form 
+method</code> specification by providing a hidden <code>input</code> field
+containing the request method.  When using AJAX, it is possible to specify
+the HTTP method, so this workaround is not required.
+</p>
+<p>
+Drupal has the <a href="http://drupal.org/project/rest_server">Rest server</a>
+module which provides a RESTful interface to Drupal using the <a
+href="http://drupal.org/project/services">Services</a> module.
+</p>
+</div>
+</div>
+
+
+<div class="slide">
+<h1>Thanks for listening!</h1>
+<p>Some resources</p>
+<ul>
+<li>
+Presentation online at <a 
+href="http://wholemeal.co.nz/~malc/presentations/rest/">http://wholemeal.co.nz/~malc/presentations/rest/</a>
+</li>
+<li>
+<a href="http://oreilly.com/catalog/9780596529260">RESTful Web Services</a> - O'Reilly
+</li>
+<li>
+RTFRFC! - <a href="http://www.ietf.org/rfc/rfc2616.txt">RFC 2616 - Hypertext Transfer Protocol -- HTTP/1.1</a>
+</li>
+</ul>
+</div>
+
+
+</div>
+
+</body>
+</html>
