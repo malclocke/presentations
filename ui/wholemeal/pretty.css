@@ -101,6 +101,24 @@ div.container {border: 0.2em solid black;margin: 1em;padding: 1em;}
   border-style: solid;
 }
 
+pre.shell {
+  background-color: #000;
+  color: #fff;
+}
+
+.linehighlight {
+  border-left: 4px solid #333;
+  font-style: italic;
+  padding: 0.3em;
+}
+
+.green {
+  color: green;
+}
+.red {
+  color: red;
+}
+
 /* diagnostics
 
 li:after {content: " [" attr(class) "]"; color: #F88;}
