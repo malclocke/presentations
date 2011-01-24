@@ -197,8 +197,9 @@ end
     get "/login"
     assert_response :success
 
-    post_via_redirect "/login", :username => users(:adm).username,
-                                :password => users(:adm).password
+    post_via_redirect "/login",
+                      :username => users(:adm).username,
+                      :password => users(:adm).password
     assert_equal '/welcome', path
     assert_equal 'Welcome admin!', flash[:notice]
   end
