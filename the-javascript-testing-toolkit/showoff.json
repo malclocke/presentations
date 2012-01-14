@@ -3,5 +3,6 @@
   {"section":"qunit"},
   {"section":"jasmine"},
   {"section":"sinon"},
-  {"section":"selenium"}
+  {"section":"selenium"},
+  {"section":"buster"}
 ]}
