@@ -1,0 +1,7 @@
+{ "name": "The JavaScript Testing Toolkit", "sections": [
+  {"section":"intro"},
+  {"section":"qunit"},
+  {"section":"jasmine"},
+  {"section":"sinon"},
+  {"section":"selenium"}
+]}
